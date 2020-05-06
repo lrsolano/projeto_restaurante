@@ -51,13 +51,13 @@ module.exports = app => {
             algorithm: "RS256",
             expiresIn: 60 * 60 * 24 * 3
         });
-        res.status(200).send({ auth: true, token: token });
+        res.status(200).send({ token: token });
 
     }
 
 
     const logout = (req, res) => {
-        res.status(200).send({ auth: false, token: null });
+        res.status(200).send({ token: null });
     }
 
     const verify = (req, res, next) => {

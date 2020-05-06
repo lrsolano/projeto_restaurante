@@ -124,6 +124,59 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
+    const update = async(req, res) => {
+        const user = {...req.body }
 
-    return { save, get, getById, remove, getByJob }
+
+        if (user.iduser) delete user.iduser
+
+        if (user.logname && user.logname !== req.user.logname) {
+            const userFromDB = await app.db('users')
+                .where({ logname: user.logname }).first()
+                .catch(err => res.status(500).send(err))
+            if (userFromDB) return res.status(400).send('Já existe um usuário com esse Login')
+        }
+        if (user.email && user.email !== req.user.email) {
+            const emailFromDB = await app.db('users')
+                .where({ email: user.email }).first()
+                .catch(err => res.status(500).send(err))
+            if (emailFromDB) return res.status(400).send('Já existe um usuário com esse Email')
+
+        }
+
+        if (!user.oldPassword) return res.status(400).send('Informe a senha antiga!')
+
+        var userFromDB = await app.db('users')
+            .where({ iduser: req.user.iduser })
+            .first()
+        if (!userFromDB) return res.status(400).send('Usuário não encontrado')
+
+        const isMatch = bcrypt.compareSync(user.oldPassword, userFromDB.password)
+        if (!isMatch) return res.status(401).send('Senha antiga inválida')
+
+        if (user.newPassword) {
+
+            if (!user.confirmNewPassword) return res.status(400).send('Confirme a nova senha')
+
+            if (user.newPassword !== user.confirmNewPassword) return res.status(400).send('Senhas diferentes')
+
+            user.password = encryptPassword(user.newPassword)
+
+            delete user.newPassword
+            delete user.confirmNewPassword
+
+
+
+        }
+        delete user.oldPassword
+        app.db('users').update(user)
+            .where({ iduser: req.user.iduser })
+            .whereNull('deleteat')
+            .then(_ => res.status(204).send())
+            .catch(err => res.status(500).send(err))
+
+    }
+
+
+    return { save, get, getById, remove, getByJob, update }
 }

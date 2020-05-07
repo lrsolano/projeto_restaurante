@@ -51,7 +51,7 @@ module.exports = app => {
             algorithm: "RS256",
             expiresIn: 60 * 60 * 24 * 3
         });
-        res.status(200).send({ token: token });
+        res.status(200).send({ token: token, ...payload });
 
     }
 

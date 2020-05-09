@@ -9,6 +9,7 @@ export default new Vuex.Store({
     state: {
         columnMenu: false,
         user: null,
+        loading: false
     },
     mutations: {
         isMenuColumn(state, onOff) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
             } else {
                 delete axios.defaults.headers.common['x-access-token']
             }
+        },
+        setLoading(state, value) {
+            state.loading = value
         }
     }
 })

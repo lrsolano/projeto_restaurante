@@ -3,7 +3,7 @@
     <b-navbar v-if="user">
       <b-navbar-nav>
         <b-nav-item-dropdown text="Inicio" center>
-          <b-dropdown-item><router-link to="/user"><i class="fa fa-user-cog"></i> Atualuzar</router-link></b-dropdown-item>
+          <b-dropdown-item :to="'/user'"><i class="fa fa-user-cog"></i> Atualuzar</b-dropdown-item>
           <b-dropdown-item  @click="logout"><i class="fa fa-sign-out-alt"></i> Sair</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown text="Colaboradores" center>

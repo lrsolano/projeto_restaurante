@@ -18,7 +18,7 @@ import { baseApiUrl, userKey } from "@/global";
 
 export default {
   components: { Header, Menu, Content, Footer },
-  computed: mapState(["columnMenu"]),
+  computed: mapState(["loading"]),
   data: function() {
     return {
       validatingToken: true,

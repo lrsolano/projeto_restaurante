@@ -38,8 +38,10 @@ module.exports = app => {
         const payload = {
             iduser: user.iduser,
             name: user.name,
+            lastname: user.lastname,
             logname: user.logname,
             email: user.email,
+            tel: user.tel,
             su: user.su,
             manager: user.manager,
             cashier: user.cashier,

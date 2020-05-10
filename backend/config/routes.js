@@ -1,7 +1,7 @@
 const role = require('../api/validationUser')
 const rateLimit = require('express-rate-limit')
 
-const createLimit = rateLimit({ windowMs: 2 * 60 * 1000, max: 1, message: 'Limite atingido' })
+const createLimit = rateLimit({ windowMs: 2 * 60 * 1000, max: 10, message: 'Limite atingido' })
 module.exports = app => {
 
     const verify = app.api.auth.verify
@@ -11,7 +11,7 @@ module.exports = app => {
 
     app.route('/users')
         .all(verify)
-        .post(createLimit, app.api.users.save)
+        .post(createLimit, role('manager', app.api.users.save))
         .get(app.api.users.get)
 
     app.route('/users/job/:job')

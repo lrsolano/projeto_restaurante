@@ -13,6 +13,7 @@ module.exports = app => {
 
         if (req.params.iduser) user.iduser = req.params.iduser
 
+        if (!req.user.su) user.su = false
 
         try {
             existsOrError(user.logname, 'Usuário não informado')
@@ -63,7 +64,7 @@ module.exports = app => {
         app.db('users')
             .select('iduser', 'logname', 'name', 'lastname', 'email', 'tel', 'su', 'manager', 'application', 'cashier', 'waiter')
             .whereNull('deleteat')
-            .then(users => res.json({ users, user: req.user }))
+            .then(users => res.json(users))
             .catch(err => res.status(500).send(err))
     }
 
@@ -129,7 +130,7 @@ module.exports = app => {
 
 
         if (user.iduser) delete user.iduser
-
+        if (req.user.su) user.su = true
         if (user.logname && user.logname !== req.user.logname) {
             const userFromDB = await app.db('users')
                 .where({ logname: user.logname }).first()

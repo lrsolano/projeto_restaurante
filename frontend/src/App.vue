@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <Header />
-    <Menu :signin="signin"/>
-    <Content />
+    <Menu :signin="signin" />
+    <Loading v-if="validatingToken" />
+    <Content v-else/>
     <Footer />
   </div>
 </template>
@@ -13,11 +14,12 @@ import Header from "./components/template/Header";
 import Menu from "./components/template/Menu";
 import Content from "./components/template/Content";
 import Footer from "./components/template/Footer";
+import Loading from "./components/template/Loading";
 import axios from "axios";
 import { baseApiUrl, userKey } from "@/global";
 
 export default {
-  components: { Header, Menu, Content, Footer },
+  components: { Header, Menu, Content, Footer, Loading },
   computed: mapState(["loading"]),
   data: function() {
     return {
@@ -28,7 +30,7 @@ export default {
   methods: {
     async validateToken() {
       this.validatingToken = true;
-      this.signin = false
+      this.signin = false;
 
       const json = localStorage.getItem(userKey);
       const userData = JSON.parse(json);
@@ -36,27 +38,27 @@ export default {
 
       if (!userData) {
         this.validatingToken = false;
-        this.signin = false
+        this.signin = false;
         this.$router.push({ name: "auth" });
         return;
       }
-
       const res = await axios.post(`${baseApiUrl}/validate`, userData);
 
       if (res.data) {
         this.$store.commit("setUser", userData);
-        this.signin = true
+        this.signin = true;
       } else {
         localStorage.removeItem(userKey);
         this.$router.push({ name: "auth" });
-        this.signin = false
+        this.signin = false;
       }
 
       this.validatingToken = false;
+
     }
   },
-  created() {
-    this.validateToken();
+   created() {
+     this.validateToken();
   }
 };
 </script>
@@ -80,5 +82,4 @@ export default {
   grid-template-columns: 1fr;
   grid-template-areas: "header" "menu" "content" "footer";
 }
-
 </style>

@@ -8,7 +8,7 @@
 import {mapState} from 'vuex'
 export default {
   name: "Content",
-  computed: mapState(['loading'])
+  computed: mapState(['loading','user'])
 };
 </script>
 

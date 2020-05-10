@@ -2,15 +2,15 @@
   <div class="menu">
     <b-navbar v-if="user">
       <b-navbar-nav>
-        <b-nav-item-dropdown text="Inicio" center>
+        <b-nav-item-dropdown text="Meu Perfil" center>
           <b-dropdown-item :to="'/user'"><i class="fa fa-user-cog"></i> Atualuzar</b-dropdown-item>
           <b-dropdown-item  @click="logout"><i class="fa fa-sign-out-alt"></i> Sair</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown text="Colaboradores" center>
-          <b-dropdown-item href="#">Listagem</b-dropdown-item>
-          <b-dropdown-item href="#" v-if="user.manager">Cadastrar</b-dropdown-item>
+          <b-dropdown-item :to="'/listOfEmployees'" v-if="user.manager || user.su">Listagem</b-dropdown-item>
+          <b-dropdown-item :to="'/hire'" v-if="user.manager || user.su">Cadastrar</b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item href="#">Produtos</b-nav-item>
+        <b-nav-item :to="'/products'" v-if="user.su || user.manager">Produtos</b-nav-item>
         <b-nav-item-dropdown text="Estoque" center>
           <b-dropdown-item href="#">Pedir</b-dropdown-item>
           <b-dropdown-item href="#">Historico</b-dropdown-item>

@@ -4,6 +4,7 @@ exports.up = function(knex) {
         table.float('price', 8, 2).notNull()
         table.integer('amount').notNull().defaultTo(0)
         table.datetime('date').notNull()
+        table.string('NF').notNull()
         table.integer('idproduct').unsigned().references('idproduct').inTable('products').notNull()
         table.integer('iduser').unsigned().references('iduser').inTable('users').notNull()
         table.datetime('deleteat')

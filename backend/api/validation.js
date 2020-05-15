@@ -50,9 +50,15 @@ module.exports = app => {
 
     const getAddById = async(idstock) =>
         await app.db('stocks')
-        .select('iduser', 'idproduct', 'amount')
+        .select('iduser', 'idproduct', 'amount', 'NF')
         .whereNull('deleteat')
         .where({ idstock }).first()
+
+    const getStockbyNF = async(NF) =>
+        await app.db('stocks')
+        .select('iduser', 'idproduct', 'amount', 'NF')
+        .whereNull('deleteat')
+        .where({ NF }).first()
 
 
     return {
@@ -65,6 +71,7 @@ module.exports = app => {
         isNumberOrError,
         getProductById,
         getUserById,
-        getAddById
+        getAddById,
+        getStockbyNF
     }
 }

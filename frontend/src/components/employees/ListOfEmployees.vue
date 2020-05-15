@@ -247,7 +247,8 @@ export default {
       filter: null,
       totalRows: 1,
       currentPage: 1,
-      perPage: 10
+      perPage: 10,
+      iduser: 0
     };
   },
   methods: {
@@ -256,10 +257,14 @@ export default {
       axios
         .get(url)
         .then(res => {
-          this.users = res.data;
+
+          this.users = res.data.filter(this.removeUserFromList);
           this.totalRows = this.users.length;
         })
         .catch(showError);
+    },
+    removeUserFromList(u){
+      return u.iduser !== this.iduser && !u.su 
     },
     info(item, index, button) {
       this.user = item;
@@ -306,6 +311,7 @@ export default {
   },
   mounted() {
     this.su = this.$store.state.user.su;
+    this.iduser = this.$store.state.user.iduser;
     this.loadUsers();
   }
 };

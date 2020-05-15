@@ -7,6 +7,8 @@ import User from '@/components/user/User'
 import Hire from '@/components/employees/Hire'
 import ListOfEmployees from '@/components/employees/ListOfEmployees'
 import Products from '@/components/products/Products'
+import History from '@/components/stocks/History'
+import AddStock from '@/components/stocks/AddStock'
 
 Vue.use(VueRouter)
 
@@ -34,6 +36,14 @@ const routes = [{
     name: 'products',
     path: '/products',
     component: Products
+}, {
+    name: 'stockHistory',
+    path: '/stockHistory',
+    component: History
+}, {
+    name: 'addStock',
+    path: '/addStock',
+    component: AddStock
 }]
 
 const router = new VueRouter({

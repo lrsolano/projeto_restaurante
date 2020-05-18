@@ -37,6 +37,19 @@ module.exports = app => {
             if (!user.iduser) {
                 notExistsOrError(emailFromDB, 'Email já cadastrado')
                 notExistsOrError(userFromDB, 'Usuário já cadastrado')
+            } else {
+                const oldName = await app.db('users')
+                    .where({ iduser: user.iduser }).first()
+                    .whereNull('deleteat')
+                    .catch(err => res.status(500).send(err))
+                if (!(user.logname === oldName.logname)) {
+                    const lognameFromBD = await app.db('users')
+                        .where({ iduser: user.iduser }).first()
+                        .whereNull('deleteat')
+                        .catch(err => res.status(500).send(err))
+                    notExistsOrError(lognameFromBD, 'Usuário já cadastrado')
+
+                }
             }
 
         } catch (msg) {

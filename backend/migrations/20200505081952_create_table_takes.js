@@ -4,8 +4,8 @@ exports.up = function(knex) {
         table.integer('iduser').unsigned().references('iduser').inTable('users').notNull()
         table.integer('amount').notNull()
         table.float('price', 8, 2).notNull()
-        table.float('profit', 8, 2).notNull()
         table.datetime('date').notNull()
+        table.datetime('deleteat')
 
 
     })

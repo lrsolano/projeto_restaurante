@@ -53,6 +53,33 @@ module.exports = app => {
         .post(role('waiter', app.api.takes.takeProduct))
         .get(app.api.takes.get)
 
+    app.route('/categories')
+        .all(verify)
+        .post(role('manager', app.api.category.save))
+        .get(app.api.category.get)
+
+    app.route('/categories/products/:idcategory')
+        .all(verify)
+        .get(app.api.products.getByCategory)
+    app.route('/categories/plates/:idcategory')
+        .all(verify)
+        .get(app.api.plates.getByCategory)
+
+    app.route('/categories/:idcategory')
+        .all(verify)
+        .delete(app.api.category.remove)
+        .put(role('manager', app.api.category.save))
+
+    app.route('/plates')
+        .all(verify)
+        .post(app.api.plates.save)
+        .get(app.api.plates.get)
+
+    app.route('/plates/:idplate')
+        .all(verify)
+        .delete(app.api.plates.remove)
+        .put(app.api.plates.save)
+
 
 
 }

@@ -60,6 +60,19 @@ module.exports = app => {
         .whereNull('deleteat')
         .where({ NF }).first()
 
+    const getCategoryById = async(idcategory) =>
+        await app.db('categories')
+        .select('idcategory', 'name')
+        .whereNull('deleteat')
+        .where({ idcategory }).first()
+
+    const getPlateById = async(idplate) =>
+        await app.db('plates')
+        .select('idplate', 'name', 'price', 'idcategory')
+        .whereNull('deleteat')
+        .where({ idplate }).first()
+
+
 
     return {
         existsOrError,
@@ -72,6 +85,8 @@ module.exports = app => {
         getProductById,
         getUserById,
         getAddById,
-        getStockbyNF
+        getStockbyNF,
+        getCategoryById,
+        getPlateById
     }
 }

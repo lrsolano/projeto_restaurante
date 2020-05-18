@@ -1,6 +1,6 @@
 module.exports = app => {
 
-    const { existsOrError, notExistsOrError, isNumberOrError, getProductById } = app.api.validation
+    const { existsOrError, notExistsOrError, isNumberOrError, getProductById, getCategoryById } = app.api.validation
 
     const saveProduct = async(req, res) => {
         const product = {...req.body }
@@ -12,12 +12,35 @@ module.exports = app => {
             isNumberOrError(product.price, 'Preço não numérico')
             existsOrError(product.profit, 'Lucro não informado')
             isNumberOrError(product.profit, 'Lucro não numérico')
+            existsOrError(product.idcategory, 'Categoria não informada')
             product.qcurrent = 0
+
+            const category = await getCategoryById(product.idcategory)
+            existsOrError(category, 'Categoria não cadastrada')
+
             const productFromDB = await app.db('products')
                 .where({ product: product.product }).first()
                 .catch(err => res.status(500).send(err))
+
             if (!product.idproduct) {
+                const productFromDB = await app.db('products')
+                    .where({ product: product.product }).first()
+                    .whereNull('deleteat')
+                    .catch(err => res.status(500).send(err))
                 notExistsOrError(productFromDB, 'Produto já cadastrado')
+            } else {
+                const oldName = await app.db('products')
+                    .where({ idproduct: product.idproduct }).first()
+                    .whereNull('deleteat')
+                    .catch(err => res.status(500).send(err))
+                if (!(product.product === oldName.product)) {
+                    const productFromDB = await app.db('products')
+                        .where({ product: product.product }).first()
+                        .whereNull('deleteat')
+                        .catch(err => res.status(500).send(err))
+                    notExistsOrError(productFromDB, 'Produto já cadastrado')
+
+                }
             }
 
         } catch (msg) {
@@ -78,7 +101,15 @@ module.exports = app => {
 
     }
 
+    const getByCategory = (req, res) => {
+        app.db('products')
+            .select('idproduct', 'product', 'price', 'profit', 'qcurrent')
+            .whereNull('deleteat')
+            .where({ idcategory: req.params.idcategory })
+            .then(product => res.json(product))
+            .catch(err => res.status(500).send(err))
+    }
 
 
-    return { saveProduct, get, getById, remove }
+    return { saveProduct, get, getById, remove, getByCategory }
 }

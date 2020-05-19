@@ -74,9 +74,15 @@ module.exports = app => {
 
     const getOrderByTableOpen = async(table) =>
         await app.db('orders')
-        .select('idoreder', 'table', 'state', 'iduser')
-        .where({ table, state: true })
-        .whereNull('deleteat')
+        .select('idorder', 'table', 'state', 'iduser', 'pay')
+        .where({ table, state: false })
+        .whereNull('deleteat').first()
+
+    const getOrderByIdOpen = async(idorder) =>
+        await app.db('orders')
+        .select('idorder', 'table', 'state', 'iduser', 'pay')
+        .where({ idorder, state: false })
+        .whereNull('deleteat').first()
 
 
 
@@ -94,6 +100,7 @@ module.exports = app => {
         getStockbyNF,
         getCategoryById,
         getPlateById,
-        getOrderByTableOpen
+        getOrderByTableOpen,
+        getOrderByIdOpen
     }
 }

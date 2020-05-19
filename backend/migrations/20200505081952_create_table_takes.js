@@ -1,8 +1,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('takes', table => {
-        table.integer('idproduct').unsigned().references('idproduct').inTable('products').notNull()
-        table.integer('iduser').unsigned().references('iduser').inTable('users').notNull()
-        table.integer('amount').notNull()
+        table.increments('idtake').primary()
+        table.integer('amount').defaultTo(0)
         table.float('price', 8, 2).notNull()
         table.datetime('date').notNull()
         table.datetime('deleteat')

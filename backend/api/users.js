@@ -44,7 +44,7 @@ module.exports = app => {
                     .catch(err => res.status(500).send(err))
                 if (!(user.logname === oldName.logname)) {
                     const lognameFromBD = await app.db('users')
-                        .where({ iduser: user.iduser }).first()
+                        .where({ logname: user.logname }).first()
                         .whereNull('deleteat')
                         .catch(err => res.status(500).send(err))
                     notExistsOrError(lognameFromBD, 'Usuário já cadastrado')

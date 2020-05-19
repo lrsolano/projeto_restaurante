@@ -53,6 +53,19 @@ module.exports = app => {
         .post(role('waiter', app.api.takes.takeProduct))
         .get(app.api.takes.get)
 
+
+    app.route('/takes/user/:iduser')
+        .all(verify)
+        .get(app.api.takes.getByUser)
+
+    app.route('/takes/order/:idorder')
+        .all(verify)
+        .get(app.api.takes.getByOrder)
+
+    app.route('/takes/:idtake')
+        .all(verify)
+        .delete(app.api.takes.remove)
+
     app.route('/categories')
         .all(verify)
         .post(role('manager', app.api.category.save))
@@ -81,5 +94,25 @@ module.exports = app => {
         .put(app.api.plates.save)
 
 
+    app.route('/orders')
+        .all(verify)
+        .post(app.api.orders.save)
+        .get(app.api.orders.getByQuery)
+
+    app.route('/orders/user/:iduser')
+        .all(verify)
+        .get(app.api.orders.getByUser)
+    app.route('/orders/:idorder')
+        .all(verify)
+        .put(app.api.orders.save)
+        .get(app.api.orders.getByID)
+
+    app.route('/stateorder')
+        .all(verify)
+        .post(role('waiter', app.api.orders.closeOpen))
+
+    app.route('/payorder')
+        .all(verify)
+        .post(role('cashier', app.api.orders.pay))
 
 }

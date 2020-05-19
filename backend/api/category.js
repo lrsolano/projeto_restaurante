@@ -16,10 +16,10 @@ module.exports = app => {
 
             if (!category.idcategory) {
                 const categoryFromBD = await app.db('categories')
-                    .where({ idcategory: category.idcategory }).first()
+                    .where({ name: category.name }).first()
                     .whereNull('deleteat')
                     .catch(err => res.status(500).send(err))
-                notExistsOrError(categoryFromBD, 'Produto já cadastrado')
+                notExistsOrError(categoryFromBD, 'Categoria já cadastrada')
             } else {
                 const oldName = await app.db('categories')
                     .where({ idcategory: category.idcategory }).first()
@@ -27,10 +27,10 @@ module.exports = app => {
                     .catch(err => res.status(500).send(err))
                 if (!(category.name === oldName.name)) {
                     const categoryFromBD = await app.db('categories')
-                        .where({ idcategory: category.idcategory }).first()
+                        .where({ name: category.name }).first()
                         .whereNull('deleteat')
                         .catch(err => res.status(500).send(err))
-                    notExistsOrError(categoryFromBD, 'Produto já cadastrado')
+                    notExistsOrError(categoryFromBD, 'Categoria já cadastrada')
 
                 }
             }

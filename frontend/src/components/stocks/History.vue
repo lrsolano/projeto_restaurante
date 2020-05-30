@@ -62,21 +62,16 @@
         <button class="btn btn-primary btn-lg mt-3" @click.prevent="loadStocksRange">Buscar</button>
       </div>
       <b-row class="d-flex justify-content-center mt-5 ml-3">
-          <Apexchart
-            type="donut"
-            height="200"
-            :options="chartOptionsDonut"
-            :series="seriesDonut"
-            v-if="seriesDonut.length"
-          ></Apexchart>
+        <Apexchart
+          type="donut"
+          height="200"
+          :options="chartOptionsDonut"
+          :series="seriesDonut"
+          v-if="showMeDonut"
+        ></Apexchart>
       </b-row>
       <b-row class="d-flex justify-content-center mt-4">
-        <Apexchart
-          height="300"
-          :options="chartOptionsBar"
-          :series="seriesBar"
-          v-if="seriesBar.length"
-        ></Apexchart>
+        <Apexchart heigth="400" width="600" :options="chartOptionsBar" :series="seriesBar" v-if="showMeBar"></Apexchart>
       </b-row>
     </b-container>
   </div>
@@ -95,6 +90,8 @@ export default {
       stock: {},
       stocks: [],
       stocksRange: [],
+      showMeDonut: false,
+      showMeBar: false,
       start: null,
       end: null,
       filter: null,
@@ -122,13 +119,16 @@ export default {
         chart: {
           type: "donut",
           width: 200,
-          background: '#ddd',
+          background: "#ddd",
           toolbar: {
             show: true,
             tools: {
               download: true
             }
           }
+        },
+        animations: {
+          enabled: false
         },
         responsive: [
           {
@@ -149,9 +149,9 @@ export default {
       chartOptionsBar: {
         chart: {
           type: "bar",
-          stacked: true,
-          height: 250,
-          background: '#ddd',
+          stacked: false,
+          height: 500,
+          background: "#ddd",
           toolbar: {
             show: true
           },
@@ -159,9 +159,12 @@ export default {
             enabled: true
           }
         },
+        xaxis: {
+          type: "datetime"
+        },
         animations: {
           initialAnimation: {
-            enabled: false
+            enabled: true
           }
         },
         responsive: [
@@ -212,16 +215,24 @@ export default {
           .get(url)
           .then(res => {
             this.stocksRange = res.data.data.map(stock => {
+              let date = (new Date(stock.date))
               return {
                 product: stock.product,
                 amount: stock.amount,
-                date: new Date(stock.date).toLocaleDateString()
+                date: `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`
               };
             });
           })
           .catch(showError);
-        this.setSeriesDonut();
-        this.setSeriesBar();
+
+        this.showMeDonut = false;
+        this.showMeBar = false;
+
+        await this.setSeriesDonut();
+        await this.setSeriesBar();
+
+        this.showMeDonut = true;
+        this.showMeBar = true;
       }
     },
     onFiltered(filteredItems) {

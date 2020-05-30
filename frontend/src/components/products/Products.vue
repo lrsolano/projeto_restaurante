@@ -62,6 +62,18 @@
               </b-input-group>
             </b-form-group>
           </b-col>
+          <b-col  md="2" sm="12">
+            <b-form-group label="Categoria:" label-for="idcategory">
+              <b-input-group>
+                <template v-slot:prepend>
+                  <b-input-group-text>
+                    <i class="fa fa-tag p-1"></i>
+                  </b-input-group-text>
+                </template>
+                <b-form-select id="idcategory" :options="categories" v-model="product.idcategory"/>
+              </b-input-group>
+            </b-form-group>
+          </b-col>
         </b-row>
       </b-form>
       <div class="d-flex justify-content-center">
@@ -201,6 +213,18 @@
               </b-input-group>
             </b-form-group>
           </b-col>
+          <b-col  md="6" sm="12">
+            <b-form-group label="Categoria:" label-for="idcategory">
+              <b-input-group>
+                <template v-slot:prepend>
+                  <b-input-group-text>
+                    <i class="fa fa-tag p-1"></i>
+                  </b-input-group-text>
+                </template>
+                <b-form-select id="idcategory" :options="categories" v-model="product.idcategory"/>
+              </b-input-group>
+            </b-form-group>
+          </b-col>
         </b-row>
       </b-form>
     </b-modal>
@@ -231,7 +255,8 @@ export default {
       filter: null,
       totalRows: 1,
       currentPage: 1,
-      perPage: 10
+      perPage: 10,
+      categories: []
     };
   },
   methods: {
@@ -242,6 +267,17 @@ export default {
         .then(res => {
           this.products = res.data;
           this.totalRows = this.products.length;
+        })
+        .catch(showError);
+    },
+    loadCategories() {
+      const url = `${baseApiUrl}/categories`;
+      axios
+        .get(url)
+        .then(res => {
+          this.categories = res.data.map(cateogry => {
+            return { value: cateogry.idcategory, text: cateogry.name };
+          });
         })
         .catch(showError);
     },
@@ -314,6 +350,7 @@ export default {
   },
   mounted() {
     this.loadProducts();
+     this.loadCategories();
   }
 };
 </script>

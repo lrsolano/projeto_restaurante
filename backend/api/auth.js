@@ -79,7 +79,7 @@ module.exports = app => {
         const token = req.body.token
         jwt.verify(token, publicKey, { algorithm: ["RS256"] }, function(err, decoded) {
             if (err) {
-                return res.status(500).send(false);
+                return res.send(false);
             } else
                 return res.status(200).send(true)
 

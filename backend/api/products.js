@@ -65,7 +65,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('products')
-            .select('idproduct', 'product', 'price', 'profit', 'qcurrent')
+            .select('idproduct', 'product', 'price', 'profit', 'qcurrent', 'idcategory')
             .whereNull('deleteat')
             .then(products => res.json(products))
             .catch(err => res.status(500).send(err))
@@ -73,7 +73,7 @@ module.exports = app => {
 
     const getById = (req, res) => {
         app.db('products')
-            .select('idproduct', 'product', 'price', 'profit', 'qcurrent')
+            .select('idproduct', 'product', 'price', 'profit', 'qcurrent', 'idcategory')
             .whereNull('deleteat')
             .where({ idproduct: req.params.idproduct }).first()
             .then(product => res.json(product))

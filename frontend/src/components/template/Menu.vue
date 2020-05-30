@@ -15,7 +15,10 @@
             <b-dropdown-item :to="'/listOfEmployees'" v-if="user.manager || user.su">Listagem</b-dropdown-item>
             <b-dropdown-item :to="'/hire'" v-if="user.manager || user.su">Cadastrar</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item :to="'/products'" v-if="user.su || user.manager">Produtos</b-nav-item>
+          <b-nav-item-dropdown  v-if="user.su || user.application" text="Pratos/Produtos" center>
+            <b-dropdown-item :to="'/products'" v-if="user.application || user.su">Produtos</b-dropdown-item>
+            <b-dropdown-item :to="'/category'" v-if="user.application || user.su">Categorias</b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Estoque" center>
             <b-dropdown-item :to="'/addStock'">Pedir</b-dropdown-item>
             <b-dropdown-item :to="'/stockHistory'">Historico</b-dropdown-item>

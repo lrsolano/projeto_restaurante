@@ -7,6 +7,7 @@ import User from '@/components/user/User'
 import Hire from '@/components/employees/Hire'
 import ListOfEmployees from '@/components/employees/ListOfEmployees'
 import Products from '@/components/products/Products'
+import Category from '@/components/products/Category'
 import History from '@/components/stocks/History'
 import AddStock from '@/components/stocks/AddStock'
 
@@ -44,6 +45,10 @@ const routes = [{
     name: 'addStock',
     path: '/addStock',
     component: AddStock
+}, {
+    name: 'category',
+    path: '/category',
+    component: Category
 }]
 
 const router = new VueRouter({

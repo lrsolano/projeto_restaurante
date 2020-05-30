@@ -49,8 +49,9 @@ export default {
         this.signin = true;
       } else {
         localStorage.removeItem(userKey);
-        this.$router.push({ name: "auth" });
         this.signin = false;
+        this.$router.push({ name: "auth" });
+        
       }
 
       this.validatingToken = false;

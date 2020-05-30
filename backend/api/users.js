@@ -166,7 +166,7 @@ module.exports = app => {
         if (!userFromDB) return res.status(400).send('Usuário não encontrado')
 
         const isMatch = bcrypt.compareSync(user.oldPassword, userFromDB.password)
-        if (!isMatch) return res.status(401).send('Senha antiga inválida')
+        if (!isMatch) return res.status(400).send('Senha antiga inválida')
 
         if (user.newPassword) {
 

@@ -1,8 +1,8 @@
 <template>
   <div class="products">
     <PageTitle
-      icon="fas fa-users"
-      title=" Listagem de CAtegorias"
+      icon="fas fa-receipt"
+      title=" Listagem de Categorias"
       sub="Atualize e Edite as Categorias"
     />
     <b-container fluid class="m-0">

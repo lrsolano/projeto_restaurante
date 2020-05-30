@@ -1,7 +1,7 @@
 <template>
   <div class="products">
     <PageTitle
-      icon="fas fa-users"
+      icon="fas fa-cart-arrow-down"
       title=" Listagem de Produtos"
       sub="Atualize e Edite as informações dos produtos"
     />

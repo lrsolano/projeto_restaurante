@@ -90,7 +90,7 @@
         </b-row>
         <b-row>
           <b-col md="4" sm="12">
-            <b-form-group label="Nova Senha: " label-for="password" class="input-label">
+            <b-form-group label="Senha: " label-for="password" class="input-label">
               <b-input-group>
                 <template v-slot:prepend>
                   <b-input-group-text>
@@ -158,7 +158,7 @@
       cancel-title="Cancelar"
       ok-title="Salvar Informações"
     >
-      <template v-slot:modal-title>Informe a Senha Antiga</template>
+      <template v-slot:modal-title>Confirma criação</template>
       <div class="d-block text-center password-modal">
         <h2>Confirma criação do usuário?</h2>
       </div>
@@ -188,6 +188,7 @@ export default {
         .post(`${baseApiUrl}/users`, this.user)
         .then(() => {
           this.$toasted.global.defaultSuccess();
+          this.user = {}
         })
         .catch(showError);
       this.$store.commit("setLoading", false);

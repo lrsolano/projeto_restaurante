@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import router from './config/router'
 import './config/msg'
+import './config/axios'
 
 Vue.config.productionTip = false
 

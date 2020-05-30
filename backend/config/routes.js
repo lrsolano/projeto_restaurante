@@ -24,7 +24,7 @@ module.exports = app => {
     app.route('/users/:iduser')
         .all(verify)
         .get(app.api.users.getById)
-        .put(app.api.users.save)
+        .put(role('manager', app.api.users.save))
         .delete(app.api.users.remove)
 
     app.route('/products')

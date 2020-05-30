@@ -71,6 +71,7 @@
       size="lg"
       centered
       @ok="userUpdate"
+      @hide="resetUser"
     >
       <b-form>
         <b-row>

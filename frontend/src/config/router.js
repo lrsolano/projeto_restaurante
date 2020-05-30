@@ -11,6 +11,9 @@ import Category from '@/components/products/Category'
 import History from '@/components/stocks/History'
 import AddStock from '@/components/stocks/AddStock'
 
+import { userKey } from "@/global";
+
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -28,11 +31,13 @@ const routes = [{
 }, {
     name: 'hire',
     path: '/hire',
-    component: Hire
+    component: Hire,
+    meta: { requiresManager: true }
 }, {
     name: 'listOfEmployees',
     path: '/listOfEmployees',
-    component: ListOfEmployees
+    component: ListOfEmployees,
+    meta: { requiresManager: true }
 }, {
     name: 'products',
     path: '/products',
@@ -54,6 +59,17 @@ const routes = [{
 const router = new VueRouter({
     mode: 'history',
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    const json = localStorage.getItem(userKey)
+
+    if (to.matched.some(record => record.meta.requiresManager)) {
+        const user = JSON.parse(json)
+        user && user.manager ? next() : next({ path: '/' })
+    } else {
+        next()
+    }
 })
 
 export default router

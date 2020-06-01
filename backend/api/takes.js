@@ -4,13 +4,11 @@ module.exports = app => {
     const takeProduct = async(req, res) => {
         try {
             var take = {...req.body }
-
-
             existsOrError(take.iduser, 'Usuário não informado')
             const user = await getUserById(take.iduser)
             existsOrError(user, 'Usuário não cadastrado')
 
-            existsOrError(take.idorder, 'Usuário não informado')
+            existsOrError(take.idorder, 'Comanda não informada')
             const order = await getOrderByIdOpen(take.idorder)
             existsOrError(order, 'Não existe esta comanda ou ela já está fechada.')
 
@@ -29,13 +27,16 @@ module.exports = app => {
                     .update('qcurrent', amount)
                     .catch(err => res.status(500).send(err))
 
-            } else if (take.idplate) {
-                existsOrError(take.idplate, 'Produto não informado')
+            }
+            if (take.idplate) {
+                existsOrError(take.idplate, 'Prato não informado')
                 var plate = await getPlateById(take.idplate)
                 existsOrError(plate, 'Prato não cadastrado')
                 take.price = plate.price
-            } else {
-                throw ('Informe o prato ou produto')
+            }
+
+            if (!take.idplate && !take.idproduct) {
+                throw ("Informe um prato ou produto")
             }
 
 
@@ -121,7 +122,7 @@ module.exports = app => {
 
         idorder = req.params.idorder
         app.db.from('takes as t')
-            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate', 'pl.name')
+            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate as idplate', 'pl.name as name')
             .innerJoin('users as u', 'u.iduser', 't.iduser')
             .leftJoin('products as p', 'p.idproduct', 't.idproduct')
             .leftJoin('plates as pl', 'pl.idplate', 't.idplate')

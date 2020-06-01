@@ -2,27 +2,22 @@
   <div class="products">
     <PageTitle
       icon="fas fa-cart-arrow-down"
-      title=" Listagem de Produtos"
-      sub="Atualize e Edite as informações dos produtos"
+      title=" Listagem de Pratos"
+      sub="Atualize e Edite as informações dos pratos"
     />
     <b-container fluid class="m-0">
       <h2 class="m-1">Cadastrar:</h2>
       <b-form class="m-3">
         <b-row>
           <b-col md="6" sm="12">
-            <b-form-group label="Produto: " label-for="product" class="input-label">
+            <b-form-group label="Nome do Prato: " label-for="name" class="input-label">
               <b-input-group>
                 <template v-slot:prepend>
                   <b-input-group-text>
                     <i class="fa fa-tag p-1"></i>
                   </b-input-group-text>
                 </template>
-                <input
-                  type="text"
-                  id="product"
-                  v-model="product.product"
-                  placeholder="Informe o Produto"
-                />
+                <input type="text" id="name" v-model="plate.name" placeholder="Informe o Nome" />
               </b-input-group>
             </b-form-group>
           </b-col>
@@ -38,31 +33,32 @@
                   type="number"
                   step="0.01"
                   id="price"
-                  v-model="product.price"
+                  v-model="plate.price"
                   placeholder="Infome o Preço"
                 />
               </b-input-group>
             </b-form-group>
           </b-col>
           <b-col md="6" sm="12">
-            <b-form-group label="Lucro: " label-for="profit" class="input-label">
+            <b-form-group label="Descrição: " label-for="desc" class="input-label">
               <b-input-group>
                 <template v-slot:prepend>
                   <b-input-group-text>
                     <i class="fa fa-hand-holding-usd p-1"></i>
                   </b-input-group-text>
                 </template>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="profit"
-                  v-model="product.profit"
-                  placeholder="Infome o Luro Desejado"
+                <b-form-textarea
+                  type="textarea"
+                  rows="1"
+                  max-rows="2"
+                  id="desc"
+                  v-model="plate.desc"
+                  placeholder="Infome a Descrição"
                 />
               </b-input-group>
             </b-form-group>
           </b-col>
-          <b-col  md="2" sm="12">
+          <b-col md="2" sm="12">
             <b-form-group label="Categoria:" label-for="idcategory">
               <b-input-group>
                 <template v-slot:prepend>
@@ -70,14 +66,14 @@
                     <i class="fa fa-tag p-1"></i>
                   </b-input-group-text>
                 </template>
-                <b-form-select id="idcategory" :options="categories" v-model="product.idcategory"/>
+                <b-form-select id="idcategory" :options="categories" v-model="plate.idcategory" />
               </b-input-group>
             </b-form-group>
           </b-col>
         </b-row>
       </b-form>
       <div class="d-flex justify-content-center">
-        <button class="btn btn-primary btn-lg mt-3" @click.prevent="saveProduct">Salvar</button>
+        <button class="btn btn-primary btn-lg mt-3" @click.prevent="savePlate">Salvar</button>
       </div>
     </b-container>
     <hr />
@@ -106,25 +102,18 @@
         striped
         stacked="md"
         :fields="fields"
-        :items="products"
+        :items="plates"
         show-empty
         responsive="true"
-        table-variant="secondary"
+        table-variant="dark"
         :current-page="currentPage"
         :per-page="perPage"
         :filter="filter"
         @filtered="onFiltered"
         class="mb-0"
       >
-        <template v-slot:cell(value)="row">
-            R${{((row.item.profit+1) * row.item.price).toFixed(2)}}
-        </template>
-        <template v-slot:cell(profit)="row">
-            {{row.item.profit * 100}}%
-        </template>
-        <template v-slot:cell(price)="row">
-            R${{row.item.price}}
-        </template>
+        <template v-slot:cell(value)="row">R${{((row.item.profit+1) * row.item.price).toFixed(2)}}</template>
+        <template v-slot:cell(price)="row">R${{row.item.price}}</template>
         <template v-slot:cell(actions)="row">
           <b-button
             @click="info(row.item, row.index, $event.target)"
@@ -132,7 +121,7 @@
           >
             <i class="fa fa-edit"></i>
           </b-button>
-          <b-button @click="remove(row.item.idproduct)" class="mr-1 btn btn-danger">
+          <b-button @click="remove(row.item.idplate)" class="mr-1 btn btn-danger">
             <i class="fa fa-times"></i>
           </b-button>
         </template>
@@ -150,29 +139,24 @@
     </b-container>
     <b-modal
       id="info-product"
-      :title="`Informações de ${product.product}`"
+      :title="`Informações de ${plate.name}`"
       ok-only
       size="lg"
       centered
-      @ok="productUpdate"
-      @hide="resetProduct"
+      @ok="plateUpdate"
+      @hide="resetPlate"
     >
       <b-form>
         <b-row>
           <b-col md="6" sm="12">
-            <b-form-group label="Produto: " label-for="product" class="input-label">
+            <b-form-group label="Prato: " label-for="plate" class="input-label">
               <b-input-group>
                 <template v-slot:prepend>
                   <b-input-group-text>
                     <i class="fa fa-tag p-1"></i>
                   </b-input-group-text>
                 </template>
-                <input
-                  type="text"
-                  id="product"
-                  v-model="product.product"
-                  placeholder="Informe o Produto"
-                />
+                <input type="text" id="plate" v-model="plate.name" placeholder="Informe o Prato" />
               </b-input-group>
             </b-form-group>
           </b-col>
@@ -188,31 +172,32 @@
                   type="number"
                   step="0.01"
                   id="price"
-                  v-model="product.price"
+                  v-model="plate.price"
                   placeholder="Infome o Preço"
                 />
               </b-input-group>
             </b-form-group>
           </b-col>
           <b-col md="6" sm="12">
-            <b-form-group label="Lucro: " label-for="profit" class="input-label">
+            <b-form-group label="Descrição: " label-for="desc" class="input-label">
               <b-input-group>
                 <template v-slot:prepend>
                   <b-input-group-text>
                     <i class="fa fa-hand-holding-usd p-1"></i>
                   </b-input-group-text>
                 </template>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="profit"
-                  v-model="product.profit"
-                  placeholder="Infome o Luro Desejado"
+                <b-form-textarea
+                  type="textarea"
+                  rows="1"
+                  max-rows="2"
+                  id="desc"
+                  v-model="plate.desc"
+                  placeholder="Infome a Descrição"
                 />
               </b-input-group>
             </b-form-group>
           </b-col>
-          <b-col  md="6" sm="12">
+          <b-col md="6" sm="12">
             <b-form-group label="Categoria:" label-for="idcategory">
               <b-input-group>
                 <template v-slot:prepend>
@@ -220,13 +205,14 @@
                     <i class="fa fa-tag p-1"></i>
                   </b-input-group-text>
                 </template>
-                <b-form-select id="idcategory" :options="categories" v-model="product.idcategory"/>
+                <b-form-select id="idcategory" :options="categories" v-model="plate.idcategory" />
               </b-input-group>
             </b-form-group>
           </b-col>
         </b-row>
       </b-form>
     </b-modal>
+    {{plate}}
   </div>
 </template>
 
@@ -236,18 +222,16 @@ import axios from "axios";
 import PageTitle from "../template/PageTitle";
 export default {
   components: { PageTitle },
-  name: "Products",
+  name: "Plates",
   data: function() {
     return {
-      product: {},
-      products: [],
+      plate: {},
+      plates: [],
       fields: [
-        { key: "product", label: "Produto", sortable: true, class:'text-center' },
+        { key: "name", label: "Prato", sortable: true, class:'text-center' },
         { key: "price", label: "Preço", sortable: true, class:'text-center' },
-        { key: "profit", label: "% Lucro", sortable: true, class:'text-center' },
-        {key: "value", label:"Valor comercializado", sortable: true, class:'text-center'},
-        { key: "qcurrent", label: "Quantidade em Estoque", sortable: true, class:'text-center'},
-        { key: "actions", label: "Ações" }
+        { key: "desc", label: "Descrição", sortable: true, class:'text-center' },
+        { key: "actions", label: "Ações", class:'text-center' }
       ],
       su: false,
       filter: null,
@@ -258,20 +242,13 @@ export default {
     };
   },
   methods: {
-    loadProducts() {
-      const url = `${baseApiUrl}/products`;
+    loadPlates() {
+      const url = `${baseApiUrl}/plates`;
       axios
         .get(url)
         .then(res => {
-          this.products = res.data.map(item => {
-            if(item.qcurrent>=30 && item.qcurrent<=70){
-              return {...item, _rowVariant:'warning'}
-            } else if (item.qcurrent<30 ){
-              return {...item, _rowVariant:'danger'}
-            }
-            return {...item}
-          })
-          this.totalRows = this.products.length;
+          this.plates = res.data;
+          this.totalRows = this.plates.length;
         })
         .catch(showError);
     },
@@ -290,76 +267,73 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    resetProduct() {
-      this.product = {};
+    resetPlate() {
+      this.plate = {};
     },
     info(item, index, button) {
-      this.product = item;
+      this.plate = item;
       this.$root.$emit("bv::show::modal", "info-product", button);
     },
-    async remove(idproduct) {
+    async remove(idplate) {
       let r = confirm("Confirma remoção?");
       if (!r) return;
       this.$store.commit("setLoading", true);
       await axios
-        .delete(`${baseApiUrl}/products/${idproduct}`)
+        .delete(`${baseApiUrl}/plates/${idplate}`)
         .then(() => {
           this.$toasted.global.defaultSuccess();
-          this.loadProducts();
-          this.resetProduct();
+          this.loadPlates();
+          this.resetPlate();
         })
         .catch(showError);
       this.$store.commit("setLoading", false);
     },
-    async productUpdate() {
-        try {
-          this.product.price = parseFloat(this.product.price);
-          this.product.profit = parseFloat(this.product.profit);
-        } catch {
-          showError("Valores não numericos");
-          return;
-        }
+    async plateUpdate() {
+      try {
+        this.plate.price = parseFloat(this.plate.price);
+      } catch {
+        showError("Valor não numericos");
+        return;
+      }
       this.$store.commit("setLoading", true);
 
       await axios
-        .put(`${baseApiUrl}/products/${this.product.idproduct}`, this.product)
+        .put(`${baseApiUrl}/plates/${this.plate.idplate}`, this.plate)
         .then(() => {
           this.$toasted.global.defaultSuccess();
-          this.loadProducts();
-          this.resetProduct();
+          this.loadPlates();
+          this.resetPlate();
         })
         .catch(showError);
       this.$store.commit("setLoading", false);
     },
-    async saveProduct() {
+    async savePlate() {
       let r = confirm("Deseja salvar o produto?");
       if (!r) return;
       try {
-        this.product.price = parseFloat(this.product.price);
-        this.product.profit = parseFloat(this.product.profit);
+        this.plate.price = parseFloat(this.plate.price);
       } catch {
-        showError("Valores não numericos");
+        showError("Valor não numerico");
         return;
       }
       this.$store.commit("setLoading", true);
       await axios
-        .post(`${baseApiUrl}/products`, this.product)
+        .post(`${baseApiUrl}/plates`, this.plate)
         .then(() => {
           this.$toasted.global.defaultSuccess();
-          this.loadProducts();
-          this.resetProduct();
+          this.loadPlates();
+          this.resetPlate();
         })
         .catch(showError);
       this.$store.commit("setLoading", false);
     }
   },
   mounted() {
-    this.loadProducts();
-     this.loadCategories();
+    this.loadPlates();
+    this.loadCategories();
   }
 };
 </script>
 
 <style>
-
 </style>

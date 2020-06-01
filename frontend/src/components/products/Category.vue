@@ -70,14 +70,13 @@
       >
         <template v-slot:cell(actions)="row">
           <b-button
-            size="sm"
             @click="info(row.item, row.index, $event.target)"
             class="mr-1 btn btn-warning"
           >
-            <i class="fa fa-user-edit"></i>
+            <i class="fa fa-edit"></i>
           </b-button>
-          <b-button size="sm" @click="remove(row.item.idcategory)" class="mr-1 btn btn-danger">
-            <i class="fa fa-user-times"></i>
+          <b-button @click="remove(row.item.idcategory)" class="mr-1 btn btn-danger">
+            <i class="fa fa-times"></i>
           </b-button>
         </template>
       </b-table>
@@ -132,15 +131,15 @@ import axios from "axios";
 import PageTitle from "../template/PageTitle";
 export default {
   components: { PageTitle },
-  name: "Products",
+  name: "Category",
   data: function() {
     return {
       category: {},
       categories: [],
       fields: [
-        { key: "idcategory", label: "Código Categoria", sortable: true },
-        { key: "name", label: "Categoria", sortable: true },
-        { key: "actions", label: "Ações" }
+        { key: "idcategory", label: "Código Categoria", sortable: true, class: 'text-center' },
+        { key: "name", label: "Categoria", sortable: true, class: 'text-center' },
+        { key: "actions", label: "Ações", class: 'text-center' }
       ],
       su: false,
       filter: null,

@@ -17,12 +17,14 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown  v-if="user.su || user.application" text="Pratos/Produtos" center>
             <b-dropdown-item :to="'/products'" v-if="user.application || user.su">Produtos</b-dropdown-item>
+            <b-dropdown-item :to="'/plates'" v-if="user.application || user.su">Pratos</b-dropdown-item>
             <b-dropdown-item :to="'/category'" v-if="user.application || user.su">Categorias</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Estoque" center>
             <b-dropdown-item :to="'/addStock'">Pedir</b-dropdown-item>
             <b-dropdown-item :to="'/stockHistory'">Historico</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item :to="'/orders'">Comandas</b-nav-item>
         </b-navbar-nav>
       </b-navbar>
     </b-container>

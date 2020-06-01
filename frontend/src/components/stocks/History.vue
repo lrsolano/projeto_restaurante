@@ -39,8 +39,8 @@
         class="mb-0"
       >
         <template v-slot:cell(actions)="row">
-          <b-button size="sm" @click="remove(row.item.idstock)" class="mr-1 btn btn-danger">
-            <i class="fa fa-user-times"></i>
+          <b-button @click="remove(row.item.idstock)" class="mr-1 btn btn-danger">
+            <i class="fa fa-times"></i>
           </b-button>
         </template>
       </b-table>
@@ -99,12 +99,12 @@ export default {
       limit: 0,
       count: 0,
       fields: [
-        { key: "idstock", label: "Código", sortable: true },
-        { key: "product", label: "Produto", sortable: true },
-        { key: "logname", label: "Usuário", sortable: true },
-        { key: "price", label: "Preço", sortable: true },
-        { key: "amount", label: "Valor da Nota Fiscal", sortable: true },
-        { key: "NF", label: "N° Nota Fiscal", sortable: true },
+        { key: "idstock", label: "Código", sortable: true, class: 'text-center' },
+        { key: "product", label: "Produto", sortable: true, class: 'text-center' },
+        { key: "logname", label: "Usuário", sortable: true, class: 'text-center' },
+        { key: "price", label: "Preço", sortable: true, class: 'text-center' },
+        { key: "amount", label: "Valor da Nota Fiscal", sortable: true, class: 'text-center' },
+        { key: "NF", label: "N° Nota Fiscal", sortable: true, class: 'text-center' },
         {
           key: "date",
           label: "Data",

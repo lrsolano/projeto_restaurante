@@ -91,7 +91,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('plates')
-            .select('idplate', 'name', 'price', 'desc')
+            .select('idplate', 'name', 'price', 'desc', 'idcategory')
             .whereNull('deleteat')
             .then(plates => res.json(plates))
             .catch(err => res.status(500).send(err))

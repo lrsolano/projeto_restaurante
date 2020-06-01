@@ -11,7 +11,7 @@ module.exports = app => {
             isNumberOrError(order.table, 'Mesa não numérica')
             existsOrError(order.people, 'Numero da pessoas não informado')
             isNumberOrError(order.people, 'Pessoas não numérica')
-            existsOrError(order.iduser, 'Preço não informado')
+            existsOrError(order.iduser, 'Usuário não informado')
 
             const isUser = await getUserById(order.iduser)
             existsOrError(isUser, 'Usuario não cadastrado')
@@ -111,7 +111,7 @@ module.exports = app => {
                 .catch(err => res.status(500).send(err))
         } else if (state) {
             app.db.from('orders as o')
-                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname', 'o.date')
+                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname as user', 'o.date as date')
                 .innerJoin('users as u', 'u.iduser', 'o.iduser')
                 .whereNull('o.deleteat')
                 .where({ state })

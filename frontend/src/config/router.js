@@ -7,9 +7,11 @@ import User from '@/components/user/User'
 import Hire from '@/components/employees/Hire'
 import ListOfEmployees from '@/components/employees/ListOfEmployees'
 import Products from '@/components/products/Products'
+import Plates from '@/components/products/Plates'
 import Category from '@/components/products/Category'
 import History from '@/components/stocks/History'
 import AddStock from '@/components/stocks/AddStock'
+import Orders from '@/components/orders/Orders'
 
 import { userKey } from "@/global";
 
@@ -54,6 +56,14 @@ const routes = [{
     name: 'category',
     path: '/category',
     component: Category
+}, {
+    name: 'plates',
+    path: '/plates',
+    component: Plates
+}, {
+    name: 'orders',
+    path: '/orders',
+    component: Orders
 }]
 
 const router = new VueRouter({
@@ -66,7 +76,7 @@ router.beforeEach((to, from, next) => {
 
     if (to.matched.some(record => record.meta.requiresManager)) {
         const user = JSON.parse(json)
-        user && user.manager ? next() : next({ path: '/' })
+        user && (user.manager || user.su) ? next() : next({ path: '/' })
     } else {
         next()
     }

@@ -4,6 +4,7 @@ module.exports = app => {
     const takeProduct = async(req, res) => {
         try {
             var take = {...req.body }
+            var price = 0
             existsOrError(take.iduser, 'Usuário não informado')
             const user = await getUserById(take.iduser)
             existsOrError(user, 'Usuário não cadastrado')
@@ -20,25 +21,24 @@ module.exports = app => {
                 existsOrError(take.amount, 'Quantidade não informada')
                 isNumberOrError(take.amount, 'Quantidade não numérica')
                 biggerOrErro(product.qcurrent, take.amount, 'Valor superior ao estoque')
-                take.price = product.price
                 amount = (product.qcurrent + (take.amount * -1))
                 app.db('products')
                     .where({ idproduct: product.idproduct })
                     .update('qcurrent', amount)
                     .catch(err => res.status(500).send(err))
+                price += ((product.price * (1 + product.profit)) * take.amount)
 
             }
             if (take.idplate) {
                 existsOrError(take.idplate, 'Prato não informado')
                 var plate = await getPlateById(take.idplate)
                 existsOrError(plate, 'Prato não cadastrado')
-                take.price = plate.price
+                price += plate.price
             }
-
             if (!take.idplate && !take.idproduct) {
                 throw ("Informe um prato ou produto")
             }
-
+            take.price = price
 
 
         } catch (msg) {
@@ -57,7 +57,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db.from('takes as t')
-            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate', 'pl.name')
+            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate', 'pl.name', 't.price as price')
             .innerJoin('users as u', 'u.iduser', 't.iduser')
             .leftJoin('products as p', 'p.idproduct', 't.idproduct')
             .leftJoin('plates as pl', 'pl.idplate', 't.idplate')
@@ -106,7 +106,7 @@ module.exports = app => {
 
         iduser = req.params.iduser
         app.db.from('takes as t')
-            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate', 'pl.name')
+            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate', 'pl.name', 't.price as price')
             .innerJoin('users as u', 'u.iduser', 't.iduser')
             .leftJoin('products as p', 'p.idproduct', 't.idproduct')
             .leftJoin('plates as pl', 'pl.idplate', 't.idplate')
@@ -122,7 +122,7 @@ module.exports = app => {
 
         idorder = req.params.idorder
         app.db.from('takes as t')
-            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate as idplate', 'pl.name as name')
+            .select('idtake', 'u.logname as logname', 'p.product as product', 't.amount as amount', 't.date as date', 'u.iduser as iduser', 'p.idproduct as idproduct', 'pl.idplate as idplate', 'pl.name as name', 't.price as price')
             .innerJoin('users as u', 'u.iduser', 't.iduser')
             .leftJoin('products as p', 'p.idproduct', 't.idproduct')
             .leftJoin('plates as pl', 'pl.idplate', 't.idplate')

@@ -91,7 +91,7 @@
                     <i class="fa fa-user-circle p-1"></i>
                   </b-input-group-text>
                 </template>
-                <b-form-select id="user" :options="users" v-model="order.iduser" size="lg"/>
+                <b-form-select id="user" :options="users" v-model="order.iduser" size="lg" />
               </b-input-group>
             </b-form-group>
           </b-col>
@@ -186,6 +186,7 @@
         table-variant="secondary"
         class="mb-0 mt-3"
       >
+        <template v-slot:cell(price)="row">R${{row.item.price}}</template>
         <template v-slot:cell(actions)="row">
           <b-button @click="removeTake(row.item.idtake)" class="mr-1 btn btn-danger">
             <i class="fa fa-times"></i>
@@ -259,6 +260,12 @@ export default {
         {
           key: "name",
           label: "Prato",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "price",
+          label: "Preço",
           sortable: true,
           class: "text-center"
         },

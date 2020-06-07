@@ -1,6 +1,6 @@
 <template>
   <div class="orders">
-    <PageTitle icon="fas fa-file-invoice" title=" Listagem de Comandas" sub="Comandas" />
+    <PageTitle icon="fas fa-file-invoice" title=" Listagem de Comandas Abertas" sub="Comandas" />
     <div class="d-flex justify-content-center">
       <button class="btn btn-primary btn-lg mt-3" v-b-modal.new-order>Abrir Nova Comanda</button>
     </div>

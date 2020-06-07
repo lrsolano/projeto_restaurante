@@ -133,6 +133,8 @@ module.exports = app => {
 
     }
 
+    const sumTotal = (accumulator, currentValue) => accumulator + currentValue.price
+
 
     return { takeProduct, get, remove, getByUser, getByOrder }
 }

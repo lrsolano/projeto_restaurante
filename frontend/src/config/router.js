@@ -12,6 +12,8 @@ import Category from '@/components/products/Category'
 import History from '@/components/stocks/History'
 import AddStock from '@/components/stocks/AddStock'
 import Orders from '@/components/orders/Orders'
+import Cashier from '@/components/orders/Cashier'
+import Paid from '@/components/orders/Paid'
 
 import { userKey } from "@/global";
 
@@ -64,6 +66,15 @@ const routes = [{
     name: 'orders',
     path: '/orders',
     component: Orders
+}, {
+    name: 'cashier',
+    path: '/cashier',
+    component: Cashier
+
+}, {
+    name: 'orderspaid',
+    path: '/orderspaid',
+    component: Paid
 }]
 
 const router = new VueRouter({

@@ -95,7 +95,7 @@ module.exports = app => {
         if (req.query.state !== undefined) var state = req.query.state
         if (pay && state) {
             app.db.from('orders as o')
-                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname', 'o.date')
+                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname as user', 'o.date as date')
                 .innerJoin('users as u', 'u.iduser', 'o.iduser')
                 .whereNull('o.deleteat')
                 .where({ pay, state })
@@ -103,7 +103,7 @@ module.exports = app => {
                 .catch(err => res.status(500).send(err))
         } else if (pay) {
             app.db.from('orders as o')
-                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname', 'o.date')
+                .select('idorder', 'table', 'people', 'state', 'pay', 'u.logname as user', 'o.date as date')
                 .innerJoin('users as u', 'u.iduser', 'o.iduser')
                 .whereNull('o.deleteat')
                 .where({ pay })
@@ -133,7 +133,7 @@ module.exports = app => {
         if (req.query.state !== undefined) {
             var state = req.query.state
         } else {
-            return res.status(500).send('Passe o estado da mesa')
+            return res.status(400).send('Passe o estado da mesa')
         }
 
         idorder = req.body.idorder
@@ -179,6 +179,7 @@ module.exports = app => {
             .then(_ => res.status(204).send())
             .catch(err => res.status(500).send(err))
     }
+
 
 
     return { save, getByUser, getByQuery, closeOpen, pay, getByID }

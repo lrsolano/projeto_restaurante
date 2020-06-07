@@ -25,6 +25,8 @@
             <b-dropdown-item :to="'/stockHistory'">Historico</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item :to="'/orders'" v-if="user.waiter || user.su">Comandas</b-nav-item>
+          <b-nav-item :to="'/cashier'" v-if="user.waiter || user.su">Pagamento</b-nav-item>
+          <b-nav-item :to="'/orderspaid'" v-if="user.waiter || user.su">Comandas Pagas</b-nav-item>
         </b-navbar-nav>
       </b-navbar>
     </b-container>

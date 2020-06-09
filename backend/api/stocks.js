@@ -26,6 +26,7 @@ module.exports = app => {
             notExistsOrError(NFFromBD, 'Nota Fiscal já Cadastrada')
 
             amount = productFromBD.qcurrent + product.amount
+            pricePerProduct = product.price / product.amount
 
         } catch (msg) {
             return res.status(400).send(msg)
@@ -36,6 +37,7 @@ module.exports = app => {
         app.db('products')
             .where({ idproduct: product.idproduct })
             .update('qcurrent', amount)
+            .update('price', pricePerProduct)
             .catch(err => res.status(500).send(err))
 
         app.db('stocks')

@@ -212,7 +212,6 @@
         </b-row>
       </b-form>
     </b-modal>
-    {{plate}}
   </div>
 </template>
 

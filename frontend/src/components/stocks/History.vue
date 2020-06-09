@@ -43,6 +43,9 @@
             <i class="fa fa-times"></i>
           </b-button>
         </template>
+        <template v-slot:cell(price)="row">
+            R${{row.item.price}}
+        </template>
       </b-table>
       <b-pagination size="md" v-model="page" :total-rows="count" :per-page="limit" />
       <b-row>
@@ -102,8 +105,8 @@ export default {
         { key: "idstock", label: "Código", sortable: true, class: 'text-center' },
         { key: "product", label: "Produto", sortable: true, class: 'text-center' },
         { key: "logname", label: "Usuário", sortable: true, class: 'text-center' },
-        { key: "price", label: "Preço", sortable: true, class: 'text-center' },
-        { key: "amount", label: "Valor da Nota Fiscal", sortable: true, class: 'text-center' },
+        { key: "price", label: "Valor da Nota Fiscal", sortable: true, class: 'text-center' },
+        { key: "amount", label: "Quantidade", sortable: true, class: 'text-center' },
         { key: "NF", label: "N° Nota Fiscal", sortable: true, class: 'text-center' },
         {
           key: "date",

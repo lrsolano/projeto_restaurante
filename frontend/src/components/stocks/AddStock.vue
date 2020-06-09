@@ -5,9 +5,9 @@
       title=" Cadastrar Nota Fiscal"
       sub="Cadastre nota fiscais de produtos"
     />
-    <b-container fluid class="m-5">
+    <b-container fluid class="m-0">
       <b-form class="m-3">
-        <b-row>
+        <b-row class="d-flex justify-content-center">
           <b-col md="3" sm="12">
             <b-form-group label="Produto:" label-for="idproduct">
               <b-input-group>
@@ -38,7 +38,7 @@
             </b-form-group>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row class="d-flex justify-content-center">
           <b-col md="3" sm="12">
             <b-form-group label="Preço: " label-for="price" class="input-label">
               <b-input-group>

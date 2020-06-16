@@ -1,5 +1,5 @@
 export const userKey = '__projetoRestaurante'
-export const baseApiUrl = 'http://192.168.18.5:3000'
+export const baseApiUrl = 'http://192.168.18.42:8008'
 
 import Vue from 'vue'
 
